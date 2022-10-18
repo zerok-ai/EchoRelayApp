@@ -1,0 +1,39 @@
+{
+  "name": "echorelayapp",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon start",
+    "inject": "set TARGETS=localhost:8080 && node src/app.js"
+  },
+  "dependencies": {
+    "axios": "^1.1.2",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.18.1",
+    "helmet": "^5.0.2",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "prometheus-api-metrics": "^3.2.1"
+  },
+  "description": "Basic Node.js application to create a multi-tier service mesh. Services can echo and relay the traffic to downstream services.",
+  "main": "src/app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zerokdotai/EchoRelayApp.git"
+  },
+  "keywords": [
+    "Sample",
+    "test",
+    "echo",
+    "relay"
+  ],
+  "author": "Shivam Nagar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zerokdotai/EchoRelayApp/issues"
+  },
+  "homepage": "https://github.com/zerokdotai/EchoRelayApp#readme"
+}
