@@ -1,6 +1,16 @@
 # EchoRelayApp
 Basic Node.js application to create a multi-tier service mesh. Services can echo and relay the traffic to downstream services.
 
+### Use Cases:
+1. Basic mock server 
+2. Introducing custom delay in upstream API call. 
+3. Load Testing sequential API invocations across multiple services.
+
+### Future plans
+1. Adding custom mock APIs with built-in latency manipulation.
+2. Providing a lambda function to be executed on API calls.
+3. Support for asynchronous upstream calls
+
 ## Usage
 ### Minikube
 ```sh
