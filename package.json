@@ -4,22 +4,37 @@
   "private": false,
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon start",
+    "dev": "nodemon --watch ./configuration src/app.js",
     "inject": "set TARGETS=localhost:8080 && node src/app.js"
   },
   "dependencies": {
+    "@risingstack/jaeger": "^2.5.0",
+    "@risingstack/opentracing-auto": "^1.5.2",
     "axios": "^1.1.2",
+    "chalk": "^5.1.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "^4.18.1",
     "helmet": "^5.0.2",
     "http-errors": "~1.6.3",
+    "js-yaml": "^4.1.0",
+    "mongodb": "^4.12.0",
     "morgan": "~1.9.1",
-    "prometheus-api-metrics": "^3.2.1"
+    "mysql2": "^2.3.3",
+    "opentracing": "^0.14.7",
+    "prometheus-api-metrics": "^3.2.2",
+    "ts-node": "^10.9.1",
+    "zipkin": "^0.22.0",
+    "zipkin-context-cls": "^0.22.0",
+    "zipkin-instrumentation-axios": "^0.1.0",
+    "zipkin-instrumentation-express": "^0.22.0",
+    "zipkin-instrumentation-fetch": "^0.22.0",
+    "zipkin-instrumentation-mysql2": "^1.0.1",
+    "zipkin-transport-http": "^0.22.0"
   },
   "description": "Basic Node.js application to create a multi-tier service mesh. Services can echo and relay the traffic to downstream services.",
   "main": "src/app.js",
-  "devDependencies": {},
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zerokdotai/EchoRelayApp.git"

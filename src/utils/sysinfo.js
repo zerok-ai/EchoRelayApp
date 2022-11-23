@@ -1,5 +1,5 @@
 // get hosts and ips
-const os = require('os');
+import os from 'os';
 
 const nets = os.networkInterfaces();
 const ipconfig = Object.create(null); // Or just '{}', an empty object
@@ -13,7 +13,9 @@ for (const name of Object.keys(nets)) {
 	}
 }
 
-module.exports = {
+const sysinfo = {
     ipconfig,
     hostname
 };
+
+export default sysinfo;

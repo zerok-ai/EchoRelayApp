@@ -2,7 +2,10 @@
  * Prometheus
  */
 
-const client = require('prom-client');
+import client from 'prom-client';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const apiMetrics = require('prometheus-api-metrics');
 
 const Counter = client.Counter;
 const APICounter = new Counter({
@@ -17,8 +20,10 @@ const hcCounter = new Counter({
     labelNames: ['code'],
 })
 
-module.exports = {
+const prometheus = {
     APICounter,
-    hcCounter
-};
+    hcCounter,
+    apiMetrics
+}
+export default prometheus;
  

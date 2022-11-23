@@ -1,48 +1,33 @@
-'use strict';
-const express = require('express')
+import express from 'express'
+
+import promCounters from './utils/prometheus.js';
+import sysInfo from './utils/sysinfo.js';
+import configurations from './utils/configs.js';
+
+import handler from './connections.js'; 
+import upstream from './upstream.js'; 
+
+const { configs, apis, connections } = configurations;
+
 const app = express()
-const axios = require('axios');
+const port = configs.port;
+const name = configs.name;
 
-var promCounters = require('./utils/prometheus');
-var sysInfo = require('./utils/sysinfo');
-var configs = require('./utils/configs');
-
-const apiMetrics = require('prometheus-api-metrics');
-app.use(apiMetrics({
+app.use(promCounters.apiMetrics({
     metricsPrefix: configs.name.replace("-", "_")+"_"
 }));
 
-const port = configs.port;
+import zipkin from './utils/zipkin.js';
+app.use(zipkin.zipkinMiddleware({
+  tracer: zipkin.getTracer(configs.zipkin), 
+  serviceName: name
+}));
+handler.setConfigs(configs);
+handler.setTracer(zipkin);
+
+const conn = handler.set(connections);
+upstream.setupAPIs(app, conn, apis);
 
 app.listen(port, () => {
 	console.log('Server ready at http://'+ sysInfo.hostname + ':' + port);
-	console.log('Supports Prometheus');
-})
-
-function createUpstreamCall(target) {
-  console.log('>>', target)
-  return axios.get('http://'+target);
-}
-
-/* APIs */
-app.get('/hc', (req, res) => {
-	promCounters.hcCounter.inc({ code: 200 });
-	res.send({"success": true});
 });
-
-app.get('/', (req, res) => {
-	promCounters.APICounter.inc({ code: 200 });
-  const targets = configs.targets.split(',').filter(Boolean);
-  const latency = configs.getRandomLatency()
-  setTimeout(() => {
-    Promise
-    .all(targets.map(createUpstreamCall))
-    .then((results) => {
-      let curr_resp_path = results.map(result => result.data.path)
-      const resp_str = configs.name + ' -> {' + curr_resp_path.join(',') + '}'
-      console.log("path > ", resp_str);
-      res.send({"path": resp_str });
-    });
-  }, latency);
-});
-
