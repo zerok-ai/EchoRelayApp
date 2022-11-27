@@ -3,7 +3,7 @@ import yaml from 'js-yaml';
 import chalk from 'chalk';
 
 const _ENV = process.env;
-const confFile = _ENV.CONF_FILE ? _ENV.CONF_FILE : './configuration/service2-definition.yaml'
+const confFile = _ENV.CONF_FILE ? _ENV.CONF_FILE : './configuration/service1-definition.yaml'
 
 const default_configs = {
   latency_min: 0,
