@@ -1,0 +1,104 @@
+kind: Configuration
+spec:
+  latency_min: 500
+  latency_max: 1000
+  port: 9091
+  name: service1
+  zipkin: 'http://localhost:9411/api/v1/spans'
+  # prometheus: 
+
+---
+
+# kind: Connection
+# metadata: 
+#   name: mysqlConn
+#   kind: mysql
+# spec:
+#   username: root
+#   password: password
+#   db: mysql
+#   host: "localhost"
+#   port: 3306
+ 
+# ---
+
+# kind: Connection
+# metadata: 
+#   name: redisConn
+#   kind: redis
+# spec:
+#   host: "localhost"
+#   port: 6379
+
+# ---
+
+# kind: Connection
+# metadata: 
+#   name: mongoConn
+#   kind: mongo
+# spec:
+#   host: "localhost"
+#   port: 27017
+
+---
+
+kind: APIs
+metadata:
+  prefix: ""
+spec:
+  - path: "/"
+    response: 
+      status: 200
+      headers: 
+        from: svc1
+      data: 'Success'
+      statusText: 'OK'
+
+  - path: "/api"
+    dependents: 
+      - path: "demo-zkproxy-serv2.getanton.com"
+      - path: "demo-zkproxy-serv3.getanton.com"
+    response: 
+      status: 200
+      headers: 
+        from: svc1
+        content-type: application/json
+      json: |
+        {
+          "response1": "${apiSpec.dependents[0].response.data}",
+          "response2": "${apiSpec.dependents[1].response.data}",
+          "time": "${new Date()}"
+        }
+
+  - path: "/api2"
+    dependents: 
+      - path: "example.com"
+    response: 
+      status: 200
+      headers: 
+        from: svc1
+      json: |
+        {
+          "response1": "${apiSpec.dependents[0].response}",
+          "time": "${new Date()}"
+        }
+
+  # - path: "/redis"
+  #   dependents: 
+  #     - kind: Connnection
+  #       name: redisConn
+  #       query: "TIME"
+
+  # - path: "/mongo"
+  #   dependents: 
+  #     - kind: Connnection
+  #       name: mongoConn
+  #       db: test
+  #       collection: dummy
+  #       query: ""
+        
+  # - path: "/mysql"
+  #   dependents: 
+  #     - kind: Connection
+  #       name: mysqlConn
+  #       query: "SELECT CURDATE();"
