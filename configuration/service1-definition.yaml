@@ -65,8 +65,8 @@ spec:
         content-type: application/json
       json: |
         {
-          "response1": "${apiSpec.dependents[0].response.data}",
-          "response2": "${apiSpec.dependents[1].response.data}",
+          "response-service2": "${apiSpec.dependents[0].response.data}",
+          "response-service3": "${apiSpec.dependents[1].response.data}",
           "time": "${new Date()}"
         }
 
